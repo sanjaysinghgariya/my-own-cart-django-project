@@ -1,0 +1,74 @@
+{%extends 'blog2/basic.html'%}
+{%block title%} Hello this is my blog {%endblock%}
+{%block css%}
+{%endblock%}
+{%block body%}
+<div class="container mt-4 mx-20">
+    <form method="post" action="/blog2/postblog/"  class="row g-3"> {% csrf_token %}
+        <div class="form-row">
+            <div class="form-group col-md-6">
+                <label for="name">Name</label>
+                <input type="text" class="form-control" id="name" name="name" placeholder="NAme">
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="inputtitle">
+                <h3><b>Title Of Your Blog</b></h3>
+            </label>
+            <input type="text" class="form-control" id="title" name="title" placeholder="Title Of  your blog">
+        </div>
+        <div class="form-group mt-4">
+            <label for="main_heading">
+                <h5><b> Main Heading</b></h5>
+            </label>
+            <input type="text" class="form-control" id="main_heading" name="main_heading" placeholder="Main Heading">
+        </div>
+        <div class="form-group mt-4">
+            <label for="cmain_heading">
+                <h5><b>Content Of Main Heading</b></h5>
+            </label>
+            <input type="text" class="form-control" id="cmain_heading" name="cmain_heading" placeholder="Main Heading">
+        </div>
+        <div class="form-group mt-4">
+         <label for="avatar">Choose a  picture related to yout blog:</label>
+            <br>
+        <input type="file" id="avatar" name="avatar" accept="image/png, image/jpeg">
+        </div>
+        <div class="form-group mt-4">
+            <label for="heading2 ">
+                <h5><b>Heading2</b></h5>
+            </label>
+            <input type="text" class="form-control" id="heading2" name="heading2" placeholder="Heading2">
+        </div>
+        <div class="form-group mt-4">
+            <label for="heading2 ">
+                <h5><b> content Heading2</b></h5>
+            </label>
+            <input type="text" class="form-control" id="c_heading2" name="c_heading2" placeholder="Heading2">
+        </div>
+        <div class="form-group mt-4">
+            <label for="subheading ">
+                <h5><b> Sub Heading</b></h5>
+            </label>
+            <input type="text" class="form-control" id="sub_heading" name="sub_heading" placeholder="Sub_Heading">
+        </div>
+        <div class="form-group mt-4">
+            <label for="subheading ">
+                <h5><b>Something Sub_heading</b></h5>
+            </label>
+            <input type="text" class="form-control" id="c_sub_heading" name="c_sub_heading" placeholder="Sub_Heading">
+        </div>
+        <div class="form-row mt-5">
+            <button type="submit" class="btn btn-primary">Post</button>
+        </div>
+    </form>
+</div>
+{%endblock%}
+{%block js%}
+<script>
+{%if thank%}
+alert("Thanks for contributing your thoughts on blog of my page id is {{id}}your blog will be posted soon after approval")
+document.location = "/blog2";
+{%endif%}
+</script>
+{%endblock%}

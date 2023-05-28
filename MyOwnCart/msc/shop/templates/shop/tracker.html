@@ -1,0 +1,113 @@
+{% extends 'shop/Basic.html' %}
+{%block title%}this is Checkout view page{%endblock%}
+{%block css%}
+.col{
+margin-top:38px;
+}
+{%endblock%}
+{%block body%}
+<div class="container">
+    <div class="col">
+        <h3> Step2- Enter your Address And Other Details to track Your order:</h3>
+        <form method="post" action="#" id="trackform" class="row g-3"> {% csrf_token %}
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <label for="name" class="form-label">OrderID</label>
+                    <input type="name" class="form-control" id="OrderID" name="OrderID" placeholder="OrderID">
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="inputEmail4" class="form-label">Email</label>
+                    <input type="email" class="form-control" name="Email" id="Email" placeholder="Email">
+                </div>
+                <button type="submit" class="btn btn-primary">Track Order</button>
+            </div>
+        </form>
+    </div>
+    <div class="col my-4">
+        <h2>Your Order Status:</h2>
+        <div class="my-4">
+            <ul class="list-group" id="items"> </ul>
+        </div>
+    </div>
+    <div class="col my-4">
+        <h2>Your Order Items:</h2>
+        <div class="my-4">
+            <ul class="list-group" id="order_items"> </ul>
+        </div>
+    </div>
+</div>
+{%endblock%}
+{%block js%}
+<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+<script type=”text/javascript” src=”https://code.jquery.com/jquery-1.9.1.min.js”> </script> <link rel=”stylesheet” href=”https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css”> <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+<script>
+$("#trackform").submit(function(event) {
+    $("#items").empty();
+    var forData = {
+        "OrderID": $('input[name=OrderID]').val(),
+        'Email': $('input[name=Email]').val(),
+        "csrfmiddlewaretoken": $('input[name=csrfmiddlewaretoken').val()
+    };
+    $.ajax({
+            type: "POST",
+            url: '/shop/tracker/',
+            data: forData,
+            encode: true
+        })
+
+        .done(function(data) {
+                $("#order_items").empty()
+                console.log(typeof(data));
+                console.log(data);
+                var my_data = JSON.parse(data);
+                updates = my_data["updates"];
+                console.log(updates);
+                if (updates == undefined) {
+                    my_str = `<li class="list-group-item d-flex justify-content-between align-items-center">
+                Sorry , Invalid Credentials. We are not Able to fetch this OrderID And Email</li>`
+                    $("#items").append(my_str)
+                    my_str1 = `<li class="list-group-item d-flex justify-content-between align-items-center">
+                    No any Items found With these Credentials
+                    <span class="badge bg-primary rounded-pill">please check your Details Again</span>
+                </li>`
+                        $("#order_items").append(my_str1);
+
+                } else {
+                    if (my_data["status"]=="success") {
+
+                        for (i = 0; i < updates.length; i++) {
+                            let text = updates[i]["text"]
+                            let time = updates[i]["time"]
+                            my_str = `<li class="list-group-item d-flex justify-content-between align-items-center">
+                ${text}
+                <span class="badge badge-primary badge-pill">${time}</span></li>`
+                            $("#items").append(my_str)
+                        }
+                        cart = JSON.parse(my_data["itemsJason"]);
+
+                    console.log(cart);
+                    for (var item in cart) {
+                        qty = cart[item][0];
+                        name = cart[item][1];
+                        my_str1 = `<li class="list-group-item d-flex justify-content-between align-items-center">
+                    ${name}
+                    <span class="badge bg-primary rounded-pill">${qty}</span>
+                </li>`
+                        $("#order_items").append(my_str1);
+
+                    }
+                    } else {
+                        my_str = `<li class="list-group-item d-flex justify-content-between align-items-center">
+                Sorry , Invalid Credentials. We are not Able to fetch this OrderID And Email</li>`
+                        $("#items").append(my_str)
+                        $("#order_items").append(my_str);
+                    }
+
+
+                }
+            }
+        );
+         event.preventDefault();
+});
+</script>
+{%endblock%}

@@ -1,0 +1,172 @@
+{%extends 'shop/Basic.html'%}
+{%block title%} Hello this is my blog {%endblock%}
+{%block css%}
+.rect{
+margin-right: -40px;
+}
+{%endblock%}
+{%block body%}
+{%for product, range, nSlides in allProds%}
+<h1>hello </h1>
+<div class="container mt-5">
+    <div class="row my-10 mx-5">
+        
+        {% for i in product %}
+        <div class="col-md-5 mx-5">
+            <div class="row no-gutters border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+                <div class="col p-4 d-flex flex-column position-static">
+                    <strong class="d-inline-block mb-2 text-primary" id="namepr{{i.product_id}}">{{i.product_name}}</strong>
+                    <h5 class="item-price">
+                        <strong>
+                            <p id="pricepr{{i.product_id}}">&#8377 {{i.price}}</p>
+                        </strong>
+                    </h5>
+                    <div class="mb-1 text-muted">{{i.category}}</div>
+                    <p class="card-text mb-auto">{{i.desc|slice:"0:53"}}....</p>
+                    <p class="card-text mb-auto">pr{{i.product_id}}</p>
+                    <span  id="divpr{{i.product_id}}" class="my-4 divpr">
+                        <button id="pr{{i.product_id}}" class="btn btn-primary cart">Add To Cart</button>
+                    </span>
+                    <a href="/shop/products/{{i.product_id}}"><button id="qv{{i.product_id}}" class="btn btn-primary cart">QuickView</button></a>
+                </div>
+                <div class="col-auto d-none d-lg-block" >
+                    <svg class="rect" width="8cm" height="8cm" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" preserveAspectRatio="xMidYMid slice" focusable="false" role="img" aria-label="Placeholder: Thumbnail">
+                        <rect class="rect" width="100%" height="100%" fill="#55595c"></rect>
+                        <image xlink:href='/media/{{i.image}}' width="100%" height="100%" />
+                    </svg>
+                </div>
+               
+            </div>
+           
+        </div>
+        {%if forloop.counter|divisibleby:2%}
+    </div>
+    <div class="row my-10 mx-5">
+        {%endif%}
+    {%endfor%}
+    </div>
+</div>
+{%endfor%}
+
+{%for k in blog_posting%}
+<h2>{{k.title}}</h2>
+{%endfor%}
+{%endblock%}
+{%block js%}
+<script>
+{%if msg|length != 0%}
+alert("{{msg}}")
+window.location.href = "/"
+{%endif%}
+
+if (localStorage.getItem('cart') == null) {
+    var cart = {};
+} else {
+    cart = JSON.parse(localStorage.getItem('cart'));
+}
+$('.cart').click(function() {
+    console.log('clicked');
+    var idstr = this.id.toString();
+    console.log(idstr);
+    if (cart[idstr] != undefined) {
+        cart[idstr][0] = cart[idstr][0] + 1;
+    } else {
+        qty = 1;
+        const ele6 = "name" + idstr;
+        const ele7 = ele6.slice(0, 8);
+        console.log(ele7);
+        name = document.getElementById(ele7).innerHTML;
+        console.log(name)
+        const ele11 = "price" + idstr;
+        const ele12 = ele11.slice(0, 9);
+        price = document.getElementById(ele12).innerHTML;
+        const new_price = price.slice(2, 8);
+        console.log(new_price);
+        var price_new = parseInt(new_price)
+        cart[idstr] = [qty, name, price_new];
+    } 
+    console.log(cart);
+    updateCart(cart);
+    updatePopover(cart);
+});
+$('#pop_cart').popover();
+updatePopover(cart);
+
+function updatePopover(cart) {
+    var sum = 0;
+    console.log('We are inside updatePopover');
+    var popStr = "";
+    popStr = popStr + "<h5> Cart for your items in my shopping cart </h5><div class='mx-2 my-2'>";
+    var i = 1;
+    for (var item in cart) {
+
+        const ele6 = "name" + item;
+        const ele7 = ele6.slice(0, 8);
+        popStr = popStr + "<b>" + i + "</b>. ";
+        popStr = popStr + document.getElementById(ele7).innerHTML.slice(0, 10) + "... Qty: " + cart[item][0] + '<br>';
+        console.log(popStr)
+        i = i + 1;
+    }
+    popStr = popStr + "</div> <a href='/shop/checkout'><button class='btn btn-primary' id='checkout'>Checkout</button></a> <button class='btn btn-primary' onclick= 'clearcart()',id='clearcart'>clearcart</button>"
+    // popStr = popStr + "</div>"
+    console.log("Hello popStr")
+    console.log(popStr);
+    document.getElementById('pop_cart').setAttribute('data-content', popStr);
+    $('#pop_cart').popover('show');
+}
+function updateCart(cart) {
+    var sum = 0;
+    for (var item in cart) {
+        sum = sum + cart[item][0];
+        console.log(cart);
+        console.log(typeof(item))
+        const ele2 = "div" + item;
+        // const ele3 = ele2.toString();
+        console.log(ele2);
+        console.log(typeof(ele2))
+        const ele5 = ele2.slice(0, 7)
+        console.log(ele5)
+        const element = document.getElementById(ele5);
+        console.log(element);
+        document.getElementById(ele5).innerHTML = "<button id='minus" + item + "' class='btn btn-primary minus'>-</button> <span id='val" + item + "''>" + cart[item][0] + "</span> <button id='plus" + item + "' class='btn btn-primary plus'> + </button>";
+    }
+    localStorage.setItem('cart', JSON.stringify(cart));
+    document.getElementById('cart').innerHTML = sum;
+    console.log(cart);
+    updatePopover(cart);
+}
+function clearcart() {
+
+    cart = JSON.parse(localStorage.getItem('cart'));
+    for (var item in cart) {
+        const ele7 = "div" + item;
+        const ele8 = ele7.slice(0, 7);
+        document.getElementById(ele8).innerHTML = '<button id="' + item + '" class="btn btn-primary cart"> Add to cart</button>'
+    }
+    localStorage.clear();
+    cart = {};
+    updateCart(cart);
+}
+$('.divpr').on("click", "button.minus", function() {
+    a = this.id.slice(7, );
+    cart['pr' + a][0] = cart['pr' + a][0] - 1;
+    cart['pr' + a][0] = Math.max(0, cart['pr' + a][0]);
+    document.getElementById('valpr' + a).innerHTML = cart['pr' + a][0];
+    if (cart["pr" + a][0] == 0){
+    document.getElementById('divpr' +a).innerHTML= '<button id="pr'+ a +'" class="btn btn-primary cart"> Add To cart</button>'
+    delete cart["pr" + a];
+}
+else{
+    document.getElementById('valpr' + a).innerHTML = cart['pr' + a][0];
+}
+ updateCart(cart);
+});
+$('.divpr').on("click", "button.plus", function() {
+    a = this.id.slice(6, );
+    cart['pr' + a][0] = cart['pr' + a][0] + 1;
+    document.getElementById('valpr' + a).innerHTML = cart['pr' + a][0];
+
+updateCart(cart);
+});
+</script>
+{%endblock%}

@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<style>
+  ul{
+  background-color :black;
+  color:white;
+  }
+  .container{
+   background-color :black;
+  color:white;
+  width:25vw;
+  height:25vh;
+    }
+</style>
+<body>
+
+<h1>Members</h1>
+<div class="container">
+<ul>
+  {% for x in my_product %}
+  <li> Name of the product:{{ x.product_name }}</li>
+  <li> Category of the product:{{x.category}}</li>
+  <li>Description of the product::{{x.desc}}</li>
+  <li> publish_date ::{{x.pubdate}}</li>
+<br>
+  {% endfor %}
+</ul>
+</div>
+</body>
+</html>

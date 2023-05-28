@@ -1,0 +1,56 @@
+{%extends "shop/Basic.html"%}
+{%block css%}
+    div {text-align: center;}
+    div.big {
+  line-height: 3;
+}
+{% endblock %}
+{% block body%}
+<body style="background-color:rgb(13, 14, 13);">
+    <div class="bg-success m-5">
+
+    <h1><div>Contact  Us</div></h1>
+    <h3><div>Do you have any questions?<br>
+         Please do not hesitate to contact us directly. <br>
+         Our team will come back to you within a matter of hours <br>
+         to help you.</div></h3>
+    <div class="big">
+    <form action="/action.php" method="post">
+        Name:<input name="name" type="text" size="50" style="width:400px; height: 30px"><br>
+       Email:<input name="name" type="text" size="50" style="width:400px; height: 30px"><br>
+        <select name="Problem" style="width:200px; height: 30px">
+            <option selected="selected" Value="value1" >......</option>
+            <option Value="value1">Too busy/Distracting</option>
+            <option  Value="value1">Privacy Concern</option>
+            <option  Value="value1">Trouble getting started</option>
+            <option  Value="value1">Can't Find people to follow</option>
+            <option  Value="value1">concern about my data</option>
+            <option  Value="value1">Something Else</option>
+
+        </select><br>
+<!--        <div class="dropdown">-->
+<!--            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">-->
+<!--              Isssue:-->
+<!--            </button>-->
+<!--            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">-->
+<!--              <a class="dropdown-item" href="#">Too busy/Distracting</a>-->
+<!--              <a class="dropdown-item" href="#">Privacy Concern</a>-->
+<!--              <a class="dropdown-item" href="#">Trouble getting started</a>-->
+<!--              <a class="dropdown-item" href="#">Can't Find people to follow</a>-->
+<!--              <a class="dropdown-item" href="#">concern about my data</a>-->
+<!--              <a class="dropdown-item" href="#">Something else here</a>-->
+<!--              <a class="dropdown-item" href="#">issue is not listed</a>-->
+<!--            </div>-->
+<!--          </div>-->
+          <br>
+        <textarea name="name" type="text" size="200" style="width: 627px; height: 198px;">Explain Your issue here Properly</textarea><br>
+        <!-- Brief:<input name="Give your Grief statement bout that" type="text" size="200"><br> -->
+        PhoneNumber:<input name="PhoneNumber" type="number" maxlength="10" style="width:200px; height: 30px"><br>
+
+        <!-- <input  type="submit" value="Submit" style="width: 300px; height: 40px;"> -->
+        <input class="btn btn-primary" type="submit" value="Submit">
+
+    </form>
+    </div>
+</div>
+{%endblock%}

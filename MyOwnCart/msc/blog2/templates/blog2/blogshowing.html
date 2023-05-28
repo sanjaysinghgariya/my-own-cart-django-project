@@ -1,0 +1,111 @@
+{%extends 'blog2/basic.html'%}
+{%block title%} Hello this is my blog {%endblock%}
+{%block css%}
+.next{
+margin-left:720px;
+}
+.next, .previous{
+background-color: skyblue;
+}
+{%endblock%}
+{%block body%}
+{%for k in blog_posting1%}
+{%if forloop.counter == 1 %}
+<div class="container">
+    <div class="row mt-5">
+        <div class="col-md-8 blog-main">
+            <h3 class="pb-4 mb-4 font-italic border-bottom">
+                {{k.title}}
+            </h3>
+            <div class="fb-like" data-href="https://developers.facebook.com/docs/plugins/" data-width="" data-layout="button" data-action="like" data-size="large" data-share="true"></div>
+            <div class="blog-post">
+                <image src='/media/{{k.image}}' width="100%" height="100%" />
+                <h1 class="blog_id" id="blog_id">{{k.post_id}}</h1>
+                <h1 class="blog-post-title">{{k.title}}</h1>
+                <br>
+                <strong class="blog-post-meta">{{k.pub_date}} by <a href="#">{{k.name}}</a></strong>
+                <br>
+                <h2 class="blog-post-title">{{k.heading0}}</h2>
+                <p><strong>{{k.cheading0}} </strong></p>
+                <h2>{{k.heading1}}</h2>
+                <p>{{k.cheading1}}</p>
+                <!-- <image src='/media/{{k.image}}' width="100%" height="100%" /> -->
+                <h3>{{k.sub_heading}}</h3>
+                <p>{{k.csub_heading}}</p>
+                <pre><code>Example code block</code></pre>
+            </div>
+            <div class="row">
+                <div class="col" style="display: inherit;">
+                    <a class="btn btn-primary Previous" href="#" role="button">&laquo; Previous</a>
+                    <a class="btn btn-primary next" href="#" role="button">Next &laquo;</a>
+                </div>
+            </div>
+            <div class="fb-comments" data-href="http://127.0.0.1:8000/blog2/showingblog/{{k.post_id}}" data-width="" data-numposts="5"></div>
+        </div><!-- /.blog-main -->
+        <aside class="col-md-4 blog-sidebar">
+            <div class="p-4 mb-3 bg-light rounded">
+                <h4 class="font-italic">About</h4>
+                <p class="mb-0">Flipkart operates as an online marketplace that connects buyers and sellers across India. The company generates revenue through commission-based fees, logistics and fulfillment services, advertising, subscription-based services, and financial services.22-Mar-2023
+                    .</p>
+                <div class="fb-share-button" data-href="http://127.0.0.1:8000/blog2/showingblog/3" data-layout="button" data-size="large"><a target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http%3A%2F%2F127.0.0.1%3A8000%2Fblog2%2Fshowingblog%2F3&amp;src=sdkpreparse" class="fb-xfbml-parse-ignore">Share</a></div>
+            </div>
+            <div class="p-4">
+                <h4 class="font-italic">Connect With Us</h4>
+                <ol class="list-unstyled">
+                    <li><a href="#">GitHub</a></li>
+                    <li><a href="#">Twitter</a></li>
+                    <li><a href="#">Facebook</a></li>
+                </ol>
+            </div>
+        </aside>
+    </div>
+</div>
+{%endif%}
+{%if k >= 1 %}
+<h3 id="length" class="length">{{k}}</h3>
+{%endif%}
+{%endfor%}
+{%endblock%}
+{%block js%}
+<script>
+console.log("I am here buddy ")
+$('.Previous').click(function() {
+    var x = document.getElementById("blog_id").innerHTML;
+    console.log(x);
+    console.log(typeof(x))
+    var y = Number(x) - 1;
+    if (y == 8) {
+        document.location = "/blog2/showingblog/" + 5
+    } else if (y == 7) {
+        document.location = "/blog2/showingblog/" + 5
+    } else if (y == 6) {
+        document.location = "/blog2/showingblog/" + 5
+    } else if (y > 0) {
+        document.location = "/blog2/showingblog/" + y
+        console.log("Previous clicked")
+    } else {
+        alert("This is the first Blog Of our page")
+    }
+});
+$('.next').click(function() {
+    var x = document.getElementById("blog_id").innerHTML;
+    var z = document.getElementById("length").innerHTML;
+    var y = Number(x) + 1;
+    if (y == 6) {
+        document.location = "/blog2/showingblog/" + 9
+    } else if (y == 7) {
+        document.location = "/blog2/showingblog/" + 9
+    } else if (y == 8) {
+        document.location = "/blog2/showingblog/" + 9
+    } else if (y <= Number(z)) {
+        document.location = "/blog2/showingblog/" + y
+        console.log("next clicked")
+    } else {
+        alert("This is the last blog you are being redirected to first page")
+        document.location = "/blog2/showingblog/" + 1
+
+    }
+
+});
+</script>
+{%endblock%}

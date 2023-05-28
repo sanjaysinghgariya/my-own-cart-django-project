@@ -1,0 +1,78 @@
+{%extends "shop/Basic.html"%}
+{%block title%}this is product view page{%endblock%}
+{% block css %}
+.container1{
+display: grid;
+grid-template-columns: 2fr 7fr;
+margin:20px;
+}
+.item1{
+height: 500px;
+width:30vw;
+background-color: aqua;
+color: aliceblue;
+border: 3px solid gold;
+align-items: center;
+justify-content: center;
+}
+.item{
+height:500px;
+width:55vw;
+background-color: white;
+color: brown;
+border: 3px solid gold;
+align-items: center;
+justify-content: center;
+}
+.row{
+}
+{%endblock%}
+{%block body%}
+<div class="container1">
+    <div class="item1">
+        <h1>{{product.product_id}}</h1>
+        <img src="media/{{product.image}}" width="233px" height="385px">
+    </div>
+    <div class="item">
+        <h5>ProductName: <strong>{{product.product_name}}</strong></h5>
+        <br>
+        <h3>Price: <strong>&#8377 {{product.price}} </strong></h3>
+        <br>
+        <p>ProductDescription: {{product.desc}}</p>
+        <br>
+        <p>ProductAdditionalInfo: {{product.additional_info}}</p>
+    </div>
+    <div class="row ">
+        <div class="col mt-4">
+            <button class="btn btn-primary cart mx-4 ">Buy Now</button>
+            <button class="btn btn-primary cart">Add To Cart</button>
+        </div>
+    </div>
+</div>
+{%endblock%}
+{% block js %}
+<script>
+console.log('working');
+if (localStorage.getItem('cart') == null) {
+    var cart = {};
+} else {
+    cart = JSON.parse(localStorage.getItem('cart'));
+    document.getElementById('cart').innerHTML = Object.keys(cart).length;
+}
+$('.cart').click(function() {
+    console.log('clicked');
+    var idstr = this.id.toString();
+    console.log(idstr);
+    if (cart[idstr] != undefined) {
+        cart[idstr][0] = cart[idstr][0] + 1;
+    } else {
+        cart[idstr][0] = 1;
+    }
+    <!--console.log(cart);-->
+    localStorage.setItem('cart', JSON.stringify(cart));
+    document.getElementById('cart').innerHTML = Object.keys(cart).length;
+});
+$('#pop_cart').popover();
+document.getElementById("pop_cart").setAttribute("data-content", "<h5> CaRt for your items in my shoping site</h5>");
+</script>
+{% endblock %}
